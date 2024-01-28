@@ -5,9 +5,12 @@ import {nameOf} from "../utils/utils";
 import {City, Customer} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
+import useSearchBarStore from "../store/searchBarStore";
+import {useUpdateEffect} from "primereact/hooks";
 
 const CustomerPage = () => {
     const { customers, cities, getData } = useDataStore();
+    const {searchBarValue, setSearchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(10);
@@ -19,6 +22,10 @@ const CustomerPage = () => {
         getData(Customer,nameOf(() => customers), { page: 1, limit: rows, sort: sortField, order: sortOrder });
         getData(City,nameOf(() => cities), { limit: 1000, sort: 'name', order: 'asc' });
     }, [getData, rows, sortField, sortOrder]);
+
+    useUpdateEffect(() => {
+        getData(Customer,nameOf(() => customers), { page: first, limit: rows, sort: sortField, order: sortOrder, searchTerm: searchBarValue });
+    }, [searchBarValue]);
 
     const onPageChange = (event) => {
         setFirst(event.first);

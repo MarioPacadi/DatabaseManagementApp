@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import logo from '../../assets/shopping.ico';
 import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
-import {Button} from "primereact/button";
 import {useUpdateEffect} from "primereact/hooks";
 import useToastStore from "../../store/snackbar/ToastStore";
+import useSearchBarStore from "../../store/searchBarStore";
 
 export default function ResponsiveAppBar() {
 
     const {showInfoToast} = useToastStore();
-    const [value, setValue] = useState('');
+    const {searchBarValue, setSearchBarValue} = useSearchBarStore();
 
     useUpdateEffect(() => {
-        showInfoToast("Searched",value)
-    }, [value]);
+        showInfoToast("Searched",searchBarValue)
+    }, [searchBarValue]);
     const itemTemplate = (item) => (
         <a className="d-flex align-items-center p-menuitem-link my-2" onClick={item.command}>
             <span className={item.icon} />
@@ -39,11 +39,11 @@ export default function ResponsiveAppBar() {
             <span className="p-input-icon-left">
                 <i className="pi pi-search"></i>
                 <InputText placeholder="Search" type="text" className="w-8rem sm:w-auto mx-1"
-                           defaultValue={value}
-                           onBlur={(e) => setValue(e.target.value)}
+                           defaultValue={searchBarValue}
+                           onBlur={(e) => setSearchBarValue(e.target.value)}
                            onKeyDown={(e) => {
                                if (e.key === 'Enter') {
-                                   setValue(e.target.value);
+                                   setSearchBarValue(e.target.value);
                                }
                            }}
                 />
