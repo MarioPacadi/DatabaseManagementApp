@@ -79,7 +79,7 @@ const CustomerPage = () => {
                 <div className="col-12 d-flex align-items-center justify-content-end">
                     <div className="mr-2">Sort By:</div>
                     <Dropdown
-                        placeholder={"Select Option"}
+                        placeholder={"Property"}
                         value={sortField}
                         options={customerOptions}
                         onChange={handleSortFieldChange}

@@ -12,7 +12,7 @@ const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'id', order = 
           _limit: limit,
           _sort: sort,
           _order: order,
-          name_like: searchTerm, // Example for searching by name, last name, email, phone, city
+          name_like: searchTerm,
         },
         headers:{
         }

@@ -1,104 +1,59 @@
-import React, { useState } from 'react';
-import { Button } from 'primereact/button';
-import { Menu } from 'primereact/menu';
-import { Avatar } from 'primereact/avatar';
+import React, {useState} from 'react';
 import logo from '../../assets/shopping.ico';
 import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
-import { Badge } from 'primereact/badge';
-
-const pages = [
-    { name: 'Tasks', url: '/tasks' },
-    { name: 'Store', url: '/shop' }
-];
-const settings = [
-    { name: 'Profile', url: '/profile' },
-    { name: 'Logout', url: '/home' }
-];
+import {Button} from "primereact/button";
+import {useUpdateEffect} from "primereact/hooks";
+import useToastStore from "../../store/snackbar/ToastStore";
 
 export default function ResponsiveAppBar() {
-    const itemRenderer = (item) => (
-        <a className="flex align-items-center p-menuitem-link" href={item.shortcut}>
+
+    const {showInfoToast} = useToastStore();
+    const [value, setValue] = useState('');
+
+    useUpdateEffect(() => {
+        showInfoToast("Searched",value)
+    }, [value]);
+    const itemTemplate = (item) => (
+        <a className="d-flex align-items-center p-menuitem-link my-2" onClick={item.command}>
             <span className={item.icon} />
             <span className="mx-2">{item.label}</span>
-            {item.badge && <Badge className="ml-auto" value={item.badge} />}
-            {item.shortcut && <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{item.shortcut}</span>}
         </a>
     );
+
     const items = [
-        {
-            label: 'Home',
-            icon: 'pi pi-home'
-        },
-        {
-            label: 'Features',
-            icon: 'pi pi-star'
-        },
-        {
-            label: 'Projects',
-            icon: 'pi pi-search',
-            items: [
-                {
-                    label: 'Core',
-                    icon: 'pi pi-bolt',
-                    shortcut: '⌘+S',
-                    template: itemRenderer
-                },
-                {
-                    label: 'Blocks',
-                    icon: 'pi pi-server',
-                    shortcut: '⌘+B',
-                    template: itemRenderer
-                },
-                {
-                    label: 'UI Kit',
-                    icon: 'pi pi-pencil',
-                    shortcut: '⌘+U',
-                    template: itemRenderer
-                },
-                {
-                    separator: true
-                },
-                {
-                    label: 'Templates',
-                    icon: 'pi pi-palette',
-                    items: [
-                        {
-                            label: 'Apollo',
-                            icon: 'pi pi-palette',
-                            badge: 2,
-                            template: itemRenderer
-                        },
-                        {
-                            label: 'Ultima',
-                            icon: 'pi pi-palette',
-                            badge: 3,
-                            template: itemRenderer
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Contact',
-            icon: 'pi pi-envelope',
-            badge: 3,
-            template: itemRenderer
-        }
+        { label: 'Profile', icon: 'pi pi-user', template: itemTemplate, command: () => {} },
+        { label: 'Logout', icon: 'pi pi-power-off', template: itemTemplate, command: () => {} },
     ];
 
-    const start = <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png" height="40" className="mr-2"></img>;
+    const start = (
+        <div className="d-flex align-items-center gap-2">
+            <img alt="logo" src={logo} height="40" className="mx-2"></img>
+            <h3 className="mx-2 d-none d-md-block">Database Manager</h3>
+        </div>
+    );
+
     const end = (
-        <div className="flex align-items-center gap-2">
-            <InputText placeholder="Search" type="text" className="w-8rem sm:w-auto" />
-            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
+        <div className="d-flex align-items-center gap-2">
+            <span className="p-input-icon-left">
+                <i className="pi pi-search"></i>
+                <InputText placeholder="Search" type="text" className="w-8rem sm:w-auto mx-1"
+                           defaultValue={value}
+                           onBlur={(e) => setValue(e.target.value)}
+                           onKeyDown={(e) => {
+                               if (e.key === 'Enter') {
+                                   setValue(e.target.value);
+                               }
+                           }}
+                />
+            </span>
         </div>
     );
 
     return (
-        <div className="card">
+        <div className="container">
             <Menubar model={items} start={start} end={end} />
         </div>
-    )
+    );
 }
