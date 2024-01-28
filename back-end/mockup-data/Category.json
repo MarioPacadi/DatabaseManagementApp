@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "guid": "584c1490-cb85-4765-adca-f0df4c625e97",
+    "name": "Movies"
+  },
+  {
+    "id": 2,
+    "guid": "9606543b-a1eb-41f9-ad5d-e59797eae86a",
+    "name": "Computers"
+  },
+  {
+    "id": 3,
+    "guid": "2bb87652-2993-4747-b0cf-4d72674ff65e",
+    "name": "Automotive"
+  },
+  {
+    "id": 4,
+    "guid": "d88d997f-fdc0-4afc-955e-d7b5f927f630",
+    "name": "Garden"
+  },
+  {
+    "id": 5,
+    "guid": "f65851db-196d-4dee-b60e-7c7bb9365a6d",
+    "name": "Computers"
+  },
+  {
+    "id": 6,
+    "guid": "c9491886-bbfa-4348-8fc8-573059c5e6c6",
+    "name": "Kids"
+  },
+  {
+    "id": 7,
+    "guid": "0fffbe20-ad05-4045-8be9-aed09bd96b57",
+    "name": "Electronics"
+  },
+  {
+    "id": 8,
+    "guid": "ebb77663-a417-455e-a7a2-5989d408178c",
+    "name": "Home"
+  },
+  {
+    "id": 9,
+    "guid": "8664c3d3-ff56-4ae5-a81a-b9cc68ec47d4",
+    "name": "Garden"
+  },
+  {
+    "id": 10,
+    "guid": "2becaf9b-2fd7-43a9-a0af-8ec7f8d3b84e",
+    "name": "Automotive"
+  },
+  {
+    "id": 11,
+    "guid": "fb54dd5d-9288-42b8-ba87-21be2b14f2df",
+    "name": "Shoes"
+  },
+  {
+    "id": 12,
+    "guid": "7b4a9f0d-b786-41ef-8788-69b1ce7cbd00",
+    "name": "Tools"
+  },
+  {
+    "id": 13,
+    "guid": "dfb6b005-6ef0-4bae-a614-e4811eeffcf8",
+    "name": "Industrial"
+  },
+  {
+    "id": 14,
+    "guid": "d0ec330e-a3ef-407c-8e01-cf36797fe14d",
+    "name": "Computers"
+  },
+  {
+    "id": 15,
+    "guid": "1d2075f5-bd24-4612-8a93-dd0af2cedc2e",
+    "name": "Kids"
+  },
+  {
+    "id": 16,
+    "guid": "db1bdb0a-728a-471e-9dbc-4f072f1728a5",
+    "name": "Shoes"
+  },
+  {
+    "id": 17,
+    "guid": "f7bfcc39-9747-4f0a-ac2b-cc135c4fe88c",
+    "name": "Games"
+  },
+  {
+    "id": 18,
+    "guid": "ea2ba06d-fe80-4455-b7bd-a125cf5fccfe",
+    "name": "Beauty"
+  },
+  {
+    "id": 19,
+    "guid": "d29b3733-947e-487b-9c02-9abf7fdcb3b8",
+    "name": "Sports"
+  },
+  {
+    "id": 20,
+    "guid": "9d80f5c8-090c-4b7a-b267-c1cb1b6d2d91",
+    "name": "Beauty"
+  }
+]
