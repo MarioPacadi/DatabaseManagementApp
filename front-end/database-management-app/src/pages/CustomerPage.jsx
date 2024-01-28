@@ -1,25 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { Card } from 'primereact/card';
-import { DataView } from 'primereact/dataview';
-import { Paginator } from 'primereact/paginator';
+import React, {useEffect, useState} from 'react';
+import {Card} from 'primereact/card';
+import {Paginator} from 'primereact/paginator';
 import {nameOf} from "../utils/utils";
 import {City, Customer} from "../models";
-import useDataStore from "../store/store"; // Assuming you have created a data store
+import useDataStore from "../store/store";
+import {Dropdown} from "primereact/dropdown";
 
 const CustomerPage = () => {
     const { customers, cities, getData } = useDataStore();
+
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(10);
 
+    const [sortField, setSortField] = useState(null);
+    const [sortOrder, setSortOrder] = useState(null);
+
     useEffect(() => {
-        getData(Customer,nameOf(() => customers),{ page: 1, limit: rows });
+        getData(Customer,nameOf(() => customers), { page: 1, limit: rows, sort: sortField, order: sortOrder });
         getData(City,nameOf(() => cities), { limit: 1000, sort: 'name', order: 'asc' });
-    }, [getData, rows]);
+    }, [getData, rows, sortField, sortOrder]);
 
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        getData(Customer,nameOf(() => customers), { page: event.page + 1, limit: event.rows });
+        getData(Customer,nameOf(() => customers), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder });
+    };
+
+    const handleSortFieldChange = (e) => {
+        setSortField(e.value);
+    };
+
+    const handleSortOrderChange = (e) => {
+        setSortOrder(e.value);
     };
 
     const findCityName = (cityId) => {
@@ -41,11 +53,53 @@ const CustomerPage = () => {
         </div>
     );
 
+    // Define a function to generate options array based on class properties
+    const generateOptionsFromProperties = (className) => {
+        const classProperties = Object.keys(className)
+            .filter(property => !(/\bId$/i.test(property)) && !(/guid/i.test(property))); // Filter out properties ending with "Id" and containing "guid" (case insensitive)
+        return classProperties.map((property) => ({
+            label: property.charAt(0).toUpperCase() + property.slice(1).replace(/Id$/, ''), // Capitalize first letter,
+            value: property,
+        }));
+    };
+
+    // Usage example for generating options array based on Customer class
+    const customerOptions = generateOptionsFromProperties(Customer.createDefault());
+    const orderOptions=[
+        {label: 'Ascending', value: 'asc'},
+        {label: 'Descending', value: 'desc'}
+    ]
+
     return (
-        <div>
-            <h2 className="p-md-3">Customer List</h2>
-            <div className="p-grid">
-                {customers.map(customer => customerTemplate(customer))}
+        <div className="container">
+            <div className="row mt-3">
+                <div className="col-12">
+                    <h2 className="mb-2">Customer List</h2>
+                </div>
+                <div className="col-12 d-flex align-items-center justify-content-end">
+                    <div className="mr-2">Sort By:</div>
+                    <Dropdown
+                        placeholder={"Select Option"}
+                        value={sortField}
+                        options={customerOptions}
+                        onChange={handleSortFieldChange}
+                    />
+                    <div className="mx-2">Order:</div>
+                    <Dropdown
+                        placeholder={"Select Order"}
+                        value={sortOrder}
+                        options={orderOptions}
+                        onChange={handleSortOrderChange}
+                    />
+                </div>
+            </div>
+
+            <div className="row">
+                {customers.map(customer => (
+                    <div key={customer.id} className="col-12 col-md-6 col-lg-4 mb-3">
+                        {customerTemplate(customer)}
+                    </div>
+                ))}
             </div>
             <Paginator
                 first={first}
@@ -53,6 +107,7 @@ const CustomerPage = () => {
                 totalRecords={1000}
                 rowsPerPageOptions={[10, 20, 50]}
                 onPageChange={onPageChange}
+                className="mt-2"
             />
         </div>
     );
