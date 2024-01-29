@@ -7,6 +7,8 @@ import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
 import {useUpdateEffect} from "primereact/hooks";
+import {Button} from "primereact/button";
+import "./customCss.css";
 
 const CustomerPage = () => {
     const { customers, cities, getData } = useDataStore();
@@ -50,12 +52,18 @@ const CustomerPage = () => {
         return city ? city.name : 'Unknown'; // Return city name or 'Unknown' if city not found
     };
 
+    const handleDelete = (customerId)=>{
+
+    }
+
     const customerTemplate = (customer) => (
         <div className="p-col-12 p-md-3" key={customer.id}>
-            <Card title={`${customer.name} ${customer.surname}`}>
+            <Card title={`${customer.name} ${customer.surname}`} className="card-container">
                 <div>Email: {customer.email}</div>
                 <div>Phone: {customer.telephone}</div>
                 {customer.cityId && <div>City: {findCityName(customer.cityId)}</div>}
+                <Button label="Show Bills" className="p-button-warning p-dock-right my-3 me-2" onClick={() => handleDelete(customer.id)} />
+                <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2" onClick={() => handleDelete(customer.id)} />
             </Card>
         </div>
     );

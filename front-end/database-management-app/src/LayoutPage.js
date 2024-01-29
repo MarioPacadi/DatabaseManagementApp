@@ -1,6 +1,5 @@
 import './App.css';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import CustomerList from "./pages/CustomerList";
 import Background from "./components/background/Background";
 import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import {useEffect, useRef} from "react";
@@ -24,7 +23,6 @@ export function LayoutPage() {
             <Background>
                 <Routes>
                     <Route path='/' element={<Navigate to='/customer' />} />
-                    {/*<Route path='/customer' element={<CustomerList />} />*/}
                     <Route path='/customer' element={<CustomerPage />} />
                 </Routes>
             </Background>
