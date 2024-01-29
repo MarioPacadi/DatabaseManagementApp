@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Paginator} from 'primereact/paginator';
 import {filteredNameOf, findByID, generateOptionsFromProperties, nameOf} from "../utils/utils";
-import {Bill, City, CreditCard, Customer, Seller} from "../models";
+import {Bill, City, CreditCard, Customer, Item, Product, Seller} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
@@ -10,12 +10,13 @@ import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
 import BillCard from "../components/cards/BillCard";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
+import ItemCard from "../components/cards/ItemCard";
 
-export default function BillsPage() {
+export default function ItemsPage() {
 
-    const { customerId } = useParams();
+    const { billId } = useParams();
 
-    const { bills, customers, sellers,creditCards, getData } = useDataStore();
+    const { items,products,bills, getData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
@@ -24,24 +25,22 @@ export default function BillsPage() {
     const [sortField, setSortField] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
 
-    const propertyName = filteredNameOf(() => Bill.createDefault().customerId);
-    const customer = findByID(customerId,customers);
+    const propertyName = filteredNameOf(() => Item.createDefault().billId);
+    const bill = findByID(billId,bills);
 
     useEffect(() => {
-        getData(Bill, nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
-        // getData(Bill,nameOf(() => bills), { page: 1, limit: rows, sort: sortField, order: sortOrder });
-        getData(Seller,nameOf(() => sellers), { sort: 'name', order: 'asc' });
-        getData(CreditCard,nameOf(() => creditCards), { limit: 3000, sort: 'type', order: 'asc' });
+        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: billId });
+        getData(Product,nameOf(() => products), { limit: 2100, sort: 'name', order: 'asc' });
     }, [getData, rows, sortField, sortOrder]);
 
     useUpdateEffect(() => {
-        getData(Bill,nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId, searchTerm: searchBarValue });
+        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: billId, searchTerm: searchBarValue });
     }, [searchBarValue]);
 
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        getData(Bill,nameOf(() => bills), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
+        getData(Item, nameOf(() => items), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, [propertyName]: billId });
     };
 
     const handleSortFieldChange = (e) => {
@@ -53,19 +52,11 @@ export default function BillsPage() {
     };
 
     // Usage example for generating options array based on Customer class
-    const billsOptions = generateOptionsFromProperties(Bill.createDefault());
+    const billsOptions = generateOptionsFromProperties(Item.createDefault());
     const orderOptions=[
         {label: 'Ascending', value: 'asc'},
         {label: 'Descending', value: 'desc'}
     ]
-
-    const navigate = useNavigate()
-
-    const handleShowItems = (bill)=>{
-        // I will give function to execute for Delete and Show
-        // navigate('/customer-bills',customer)
-        navigate(`/items/${bill.id}`);
-    }
 
     const handleDelete = (bill)=>{
 
@@ -76,7 +67,7 @@ export default function BillsPage() {
         <div className="container">
             <div className="row mt-3">
                 <div className="col-12">
-                    <h2 className="mb-2">Customer Bills List</h2>
+                    <h2 className="mb-2">Bill Items List</h2>
                 </div>
                 <div className="col-12 d-flex align-items-center justify-content-end">
                     <div className="mr-2">Sort By:</div>
@@ -97,14 +88,12 @@ export default function BillsPage() {
             </div>
 
             <div className="row">
-                {bills.map(bill => (
-                    <div key={bill?.id} className="col-12 col-md-6 col-lg-4 mb-3">
-                        <BillCard
+                {items.map(item => (
+                    <div key={item?.id} className="col-12 col-md-6 col-lg-4 mb-3">
+                        <ItemCard
+                            item={item}
                             bill={bill}
-                            customer={customer}
-                            sellers={sellers}
-                            creditCards={creditCards}
-                            handleShowItems={handleShowItems}
+                            products={products}
                             handleDelete={handleDelete}
                         />
                     </div>

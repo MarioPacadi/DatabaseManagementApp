@@ -29,7 +29,7 @@ export const findNameByID = (id, array=[]) => {
 export const findTypeByID = (id, array=[]) => {
     if (!id) return 'undefined'; // Handle case where cityId is null or undefined
 
-    if (!array) return 'noCities';
+    if (!array) return 'emptyArray';
 
     const item = array.find(item => item.id === id);
     return item ? item.type : 'Unknown'; // Return city name or 'Unknown' if city not found

@@ -7,4 +7,8 @@ export class Item {
     this.productId = productId || 0;
     this.totalPrice = totalPrice || 0;
   }
+
+  static createDefault(){
+    return new Item({});
+  }
 }
