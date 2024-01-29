@@ -16,8 +16,8 @@ const CustomerCard = ({ customer, cities, handleShowBills, handleDelete }) => {
                     <div>
                         <Button label="Show Bills" className="p-button-warning p-dock-right my-3 me-2"
                                 onClick={() => handleShowBills(customer)}/>
-                        <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2"
-                                onClick={() => handleDelete(customer)}/>
+                        <Button label="Delete" icon="pi pi-times" className="p-button-danger p-dock-right my-3 me-2"
+                                onClick={(event) => handleDelete(event, customer)}/>
                     </div>
                 )}
             </Card>

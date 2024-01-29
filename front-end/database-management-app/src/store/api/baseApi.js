@@ -54,6 +54,24 @@ export const deleteData = async ({ dataType, id }) => {
   }
 };
 
+export const insertData = async ({ dataType, body }) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${getToken()}`,
+    };
+
+    const response = await axios.post(`${baseUrl}/${dataType}`, body, {
+      headers: headers
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(`Error inserting ${dataType}:`, error);
+    throw error; // Re-throw the error to handle it elsewhere
+  }
+};
+
+
 
   export default fetchData
 

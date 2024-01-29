@@ -13,7 +13,8 @@ const ItemCard = ({item,bill, products, handleDelete}) => {
                 <div>Quantity: {item.quantity}</div>
                 {/*{item.productId && <div>Product: {findNameByID(item.productId, products)}</div>}*/}
                 {getToken() && (
-                        <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2" onClick={() => handleDelete(bill)}/>
+                        <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2"
+                                onClick={(event) => handleDelete(event, item)}/>
                 )}
             </Card>
         </div>

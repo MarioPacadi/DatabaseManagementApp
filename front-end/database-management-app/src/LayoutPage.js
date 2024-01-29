@@ -10,6 +10,10 @@ import BillsPage from "./pages/BillsPage";
 import Login from "./pages/Login";
 import ItemsPage from "./pages/ItemsPage";
 import Register from "./pages/Register";
+import {ConfirmPopup} from "primereact/confirmpopup";
+import CustomerInsertForm from "./pages/forms/InsertForm";
+import InsertForm from "./pages/forms/InsertForm";
+import {Bill, Customer, Item} from "./models";
 
 export function LayoutPage() {
 
@@ -24,6 +28,7 @@ export function LayoutPage() {
       <BrowserRouter>
           <ResponsiveAppBar />
           <Toast ref={toastRef} />
+          <ConfirmPopup />
             <Background>
                 <Routes>
                     <Route path='/' element={<Navigate to='/customers' />} />
@@ -32,6 +37,9 @@ export function LayoutPage() {
                     <Route path="/items/:billId" element={<ItemsPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/insert-customer" element={<InsertForm DataType={Customer} />} />
+                    <Route path="/insert-bill" element={<InsertForm DataType={Bill} />} />
+                    <Route path="/insert-item" element={<InsertForm DataType={Item} />} />
                 </Routes>
             </Background>
       </BrowserRouter>

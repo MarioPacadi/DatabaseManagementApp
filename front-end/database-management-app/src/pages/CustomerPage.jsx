@@ -9,11 +9,15 @@ import {useMountEffect, useUpdateEffect} from "primereact/hooks";
 import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
 import {useNavigate} from "react-router-dom";
+import useToastStore from "../store/snackbar/ToastStore";
+import {deletePopup} from "../components/forms/ConfirmPopupButton";
+import {Button} from "primereact/button";
 
 export default function CustomerPage() {
 
     const { customers,cities, getData, deleteData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
+    const {showInfoToast, showWarningToast} = useToastStore();
 
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(10);
@@ -61,24 +65,37 @@ export default function CustomerPage() {
         navigate(`/bills/${customer.id}`,{state: customer.id});
     }
 
-    const handleDelete = (customer)=>{
-        deleteData(Customer,customer.id).then(() => {
-            // Once deletion is successful, reload the page
-            window.location.reload();
-        })
-        .catch((error) => {
-            // Handle errors
-            console.error('Error deleting item:', error);
-        });
-    }
+    const handleDelete = (event, customer) => {
+        deletePopup(
+            () => {
+                deleteData(Customer, customer.id)
+                    .then(() => {
+                        // Once deletion is successful, reload the page
+                        window.location.reload();
+                        showInfoToast('Confirmed', 'You have deleted item.');
+                    })
+                    .catch((error) => {
+                        // Handle errors
+                        console.error('Error deleting item:', error);
+                    });
+            },
+            () => {
+                showWarningToast('Rejected', 'You have rejected');
+            }
+        )(event);
+    };
 
     return (
         <div className="container">
             <div className="row mt-3">
-                <div className="col-12">
+                <div className="col-12 d-flex justify-content-center align-items-center my-3">
                     <h2 className="mb-2">Customer List</h2>
+                    <Button icon="pi pi-plus" outlined severity="info" aria-label="Add"
+                            className="ms-2 rounded-circle"
+                            onClick={()=>{navigate("/insert-customer")}}
+                    />
                 </div>
-                <div className="col-12 d-flex align-items-center justify-content-end">
+                <div className="col-12 d-flex align-items-center justify-content-center my-2">
                     <div className="mr-2">Sort By:</div>
                     <Dropdown
                         placeholder={"Property"}
