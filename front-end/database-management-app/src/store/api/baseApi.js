@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getToken} from "../../utils/utils";
 
 // export const baseUrl = process.env.API_BASE_URL;
 export const baseUrl = 'http://localhost:3000';
@@ -46,10 +47,14 @@ const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'id', order = 
       ...(propertyValue.trim() && propertyName && { [propertyName]: propertyValue.trim() })
     };
 
+    const headers = {
+      Authorization: `Bearer ${getToken()}`,
+    };
+
     // Make the axios request with the constructed params
     const response = await axios.get(`${baseUrl}/${dataType}`, {
       params: params,
-      headers: {}
+      headers: headers
     });
 
     return response.data;

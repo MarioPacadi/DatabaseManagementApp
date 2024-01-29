@@ -1,7 +1,7 @@
 import {Card} from "primereact/card";
 import {Button} from "primereact/button";
 import React from "react";
-import {findNameByID} from "../../utils/utils";
+import {findNameByID, getToken} from "../../utils/utils";
 import {useNavigate} from "react-router-dom";
 
 const CustomerCard = ({ customer, cities, handleShowBills, handleDelete }) => {
@@ -12,10 +12,14 @@ const CustomerCard = ({ customer, cities, handleShowBills, handleDelete }) => {
                 <div>Email: {customer.email}</div>
                 <div>Phone: {customer.telephone}</div>
                 {customer.cityId && <div>City: {findNameByID(customer.cityId, cities)}</div>}
-                <Button label="Show Bills" className="p-button-warning p-dock-right my-3 me-2"
-                        onClick={() => handleShowBills(customer)}/>
-                <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2"
-                        onClick={() => handleDelete(customer)}/>
+                {getToken() && (
+                    <div>
+                        <Button label="Show Bills" className="p-button-warning p-dock-right my-3 me-2"
+                                onClick={() => handleShowBills(customer)}/>
+                        <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2"
+                                onClick={() => handleDelete(customer)}/>
+                    </div>
+                )}
             </Card>
         </div>
     );

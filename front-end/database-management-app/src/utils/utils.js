@@ -44,3 +44,8 @@ export const generateOptionsFromProperties = (className) => {
         value: property,
     }));
 };
+
+// Get token
+export function getToken(){
+    return localStorage.getItem('access_token');
+}

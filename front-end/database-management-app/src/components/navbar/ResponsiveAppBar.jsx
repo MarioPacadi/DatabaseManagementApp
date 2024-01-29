@@ -6,12 +6,15 @@ import { InputText } from 'primereact/inputtext';
 import {useUpdateEffect} from "primereact/hooks";
 import useToastStore from "../../store/snackbar/ToastStore";
 import useSearchBarStore from "../../store/searchBarStore";
+import useAuthStore from "../../store/authStore";
+import {getToken} from "../../utils/utils";
 
 export default function ResponsiveAppBar() {
 
     const navigate = useNavigate();
-    const {showInfoToast} = useToastStore();
+    const {showInfoToast, showWarningToast} = useToastStore();
     const {searchBarValue, setSearchBarValue} = useSearchBarStore();
+    const {access_token,logout} = useAuthStore();
 
     useUpdateEffect(() => {
         showInfoToast("Searched",searchBarValue)
@@ -25,8 +28,25 @@ export default function ResponsiveAppBar() {
 
     const items = [
         { label: 'Customers List', icon: 'pi pi-user', template: itemTemplate, command: () => { navigate('/customers')} },
-        { label: 'Logout', icon: 'pi pi-power-off', template: itemTemplate, command: () => {} },
     ];
+
+    if (getToken()) {
+        items.push(
+            { label: 'Logout', icon: 'pi pi-sign-out', template: itemTemplate,
+                command: () => {
+                    logout();
+                    localStorage.removeItem('access_token');
+                    showWarningToast("Logout","You have logged out!");
+                    navigate('/customers')
+                }
+            },
+        );
+    } else {
+        items.push(
+            { label: 'Login', icon: 'pi pi-sign-in', template: itemTemplate, command: () => {navigate('/login')} },
+            { label: 'Register', icon: 'pi pi-user-plus', template: itemTemplate, command: () => {navigate('/register')} },
+        );
+    }
 
     const start = (
         <div className="d-flex align-items-center gap-2">

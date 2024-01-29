@@ -1,7 +1,6 @@
 import {create} from 'zustand';
 import * as Models from '../models';
 import fetchData from "./api/baseApi";
-import getBillsByCustomerId from "./api/BillApi";
 
 const useDataStore = create((set) => ({
   customers: [],
@@ -34,20 +33,14 @@ const useDataStore = create((set) => ({
       console.error(`Error fetching and setting data for ${dataType}:`, error);
     }
   },
-  getBillsByCustomerId: async (dataType, array, params) => {
-    try {
-      const data = await getBillsByCustomerId({ dataType: dataType.name, ...params });
-      const classData = await fetchDataForDataType(dataType, data);
-      set({ bills: classData });
-    } catch (error) {
-      console.error(`Error fetching and setting data for ${dataType}:`, error);
-    }
-  },
-  
+
+
 }));
 
 export const fetchDataForDataType = async (DataType, data) => {
     return data.map(item => new DataType(item));
   };
-  
+
+
+
 export default useDataStore;

@@ -5,5 +5,10 @@ export class User {
       this.email = email || '';
       this.password = password || '';
     }
-  }
+
+    static createDefault() {
+        return new User({});
+    }
+
+}
   

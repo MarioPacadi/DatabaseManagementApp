@@ -7,6 +7,7 @@ import useToastStore from "./store/snackbar/ToastStore";
 import {Toast} from "primereact/toast";
 import CustomerPage from "./pages/CustomerPage";
 import BillsPage from "./pages/BillsPage";
+import Login from "./pages/Login";
 
 export function LayoutPage() {
 
@@ -26,6 +27,7 @@ export function LayoutPage() {
                     <Route path='/' element={<Navigate to='/customers' />} />
                     <Route path='/customers' element={<CustomerPage />} />
                     <Route path="/bills/:customerId" element={<BillsPage />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </Background>
       </BrowserRouter>
