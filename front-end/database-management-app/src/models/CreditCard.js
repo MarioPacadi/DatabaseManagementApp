@@ -7,5 +7,9 @@ export class CreditCard {
       this.expirationMonth = expirationMonth || 0;
       this.expirationYear = expirationYear || 0;
     }
+
+    static createDefault() {
+        return new CreditCard({});
+    }
   }
   

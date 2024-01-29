@@ -9,6 +9,7 @@ import useSearchBarStore from "../../store/searchBarStore";
 
 export default function ResponsiveAppBar() {
 
+    const navigate = useNavigate();
     const {showInfoToast} = useToastStore();
     const {searchBarValue, setSearchBarValue} = useSearchBarStore();
 
@@ -23,7 +24,7 @@ export default function ResponsiveAppBar() {
     );
 
     const items = [
-        { label: 'Profile', icon: 'pi pi-user', template: itemTemplate, command: () => {} },
+        { label: 'Customers List', icon: 'pi pi-user', template: itemTemplate, command: () => { navigate('/customers')} },
         { label: 'Logout', icon: 'pi pi-power-off', template: itemTemplate, command: () => {} },
     ];
 

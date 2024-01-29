@@ -10,5 +10,9 @@ export class Bill {
       this.comment = comment || '';
       this.total = total || 0;
     }
+
+  static createDefault() {
+    return new Bill({});
+  }
   }
   

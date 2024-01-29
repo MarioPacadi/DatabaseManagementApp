@@ -1,34 +1,21 @@
 import {Card} from "primereact/card";
 import {Button} from "primereact/button";
 import React from "react";
-import useDataStore from "../../store/store";
+import {findNameByID} from "../../utils/utils";
+import {useNavigate} from "react-router-dom";
 
-const CustomerCard = (customer) => {
-    const {cities} = useDataStore();
-
-    const findCityName = (cityId) => {
-        if (!cityId) return 'undefined'; // Handle case where cityId is null or undefined
-
-        if (!cities) return 'noCities';
-
-        const city = cities.find(city => city.id === cityId);
-        return city ? city.name : 'Unknown'; // Return city name or 'Unknown' if city not found
-    };
-
-    const handleDelete = (customerId)=>{
-
-    }
+const CustomerCard = ({ customer, cities, handleShowBills, handleDelete }) => {
 
     return (
         <div className="p-col-12 p-md-3" key={customer.id}>
-            <Card title={`${customer.name} ${customer.surname}`}>
+            <Card title={`${customer.name} ${customer.surname}`} className="card-container">
                 <div>Email: {customer.email}</div>
                 <div>Phone: {customer.telephone}</div>
-                {customer.cityId && <div>City: {findCityName(customer.cityId)}</div>}
+                {customer.cityId && <div>City: {findNameByID(customer.cityId, cities)}</div>}
                 <Button label="Show Bills" className="p-button-warning p-dock-right my-3 me-2"
-                        onClick={() => handleDelete(customer.id)}/>
+                        onClick={() => handleShowBills(customer)}/>
                 <Button label="Delete" className="p-button-danger p-dock-right my-3 me-2"
-                        onClick={() => handleDelete(customer.id)}/>
+                        onClick={() => handleDelete(customer)}/>
             </Card>
         </div>
     );

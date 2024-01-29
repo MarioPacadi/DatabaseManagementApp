@@ -10,15 +10,7 @@ export class Customer {
     }
   
     static createDefault() {
-      return new Customer({
-        id: 0,
-        guid: '',
-        name: '',
-        surname: '',
-        email: '',
-        telephone: '',
-        cityId: null,
-      });
+      return new Customer({});
     }
   }
   

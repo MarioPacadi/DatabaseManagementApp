@@ -1,18 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {Paginator} from 'primereact/paginator';
-import {generateOptionsFromProperties, nameOf} from "../utils/utils";
-import {Bill, City, Customer} from "../models";
+import {filteredNameOf, findByID, generateOptionsFromProperties, nameOf} from "../utils/utils";
+import {Bill, City, CreditCard, Customer, Seller} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
-import {useMountEffect, useUpdateEffect} from "primereact/hooks";
+import {useUpdateEffect} from "primereact/hooks";
 import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
-import {useNavigate} from "react-router-dom";
+import BillCard from "../components/cards/BillCard";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
-export default function CustomerPage() {
+export default function BillsPage() {
 
-    const { customers,cities, getData } = useDataStore();
+    const { customerId } = useParams();
+
+    const { bills, customers, sellers,creditCards, getData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
@@ -21,21 +24,24 @@ export default function CustomerPage() {
     const [sortField, setSortField] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
 
+    const propertyName = filteredNameOf(() => Bill.createDefault().customerId);
+    const customer = findByID(customerId,customers);
+
     useEffect(() => {
-        getData(Customer,nameOf(() => customers), { page: 1, limit: rows, sort: sortField, order: sortOrder });
-        getData(City,nameOf(() => cities), { limit: 1000, sort: 'name', order: 'asc' });
-        // eslint-disable-next-line
+        getData(Bill, nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
+        // getData(Bill,nameOf(() => bills), { page: 1, limit: rows, sort: sortField, order: sortOrder });
+        getData(Seller,nameOf(() => sellers), { sort: 'name', order: 'asc' });
+        getData(CreditCard,nameOf(() => creditCards), { limit: 3000, sort: 'type', order: 'asc' });
     }, [getData, rows, sortField, sortOrder]);
 
     useUpdateEffect(() => {
-        getData(Customer,nameOf(() => customers), { page: first, limit: rows, sort: sortField, order: sortOrder, searchTerm: searchBarValue });
-        // eslint-disable-next-line
+        getData(Bill,nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId, searchTerm: searchBarValue });
     }, [searchBarValue]);
 
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        getData(Customer,nameOf(() => customers), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder });
+        getData(Bill,nameOf(() => bills), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
     };
 
     const handleSortFieldChange = (e) => {
@@ -47,7 +53,7 @@ export default function CustomerPage() {
     };
 
     // Usage example for generating options array based on Customer class
-    const customerOptions = generateOptionsFromProperties(Customer.createDefault());
+    const billsOptions = generateOptionsFromProperties(Bill.createDefault());
     const orderOptions=[
         {label: 'Ascending', value: 'asc'},
         {label: 'Descending', value: 'desc'}
@@ -55,28 +61,29 @@ export default function CustomerPage() {
 
     const navigate = useNavigate()
 
-    const handleShowBills = (customer)=>{
+    const handleShowItems = (bill)=>{
         // I will give function to execute for Delete and Show
         // navigate('/customer-bills',customer)
-        navigate(`/bills/${customer.id}`,{state: customer.id});
+        navigate(`items/${bill.id}`);
     }
 
-    const handleDelete = (customer)=>{
+    const handleDelete = (bill)=>{
 
     }
 
+    // Check if state exists and access its properties
     return (
         <div className="container">
             <div className="row mt-3">
                 <div className="col-12">
-                    <h2 className="mb-2">Customer List</h2>
+                    <h2 className="mb-2">Customer Bills List</h2>
                 </div>
                 <div className="col-12 d-flex align-items-center justify-content-end">
                     <div className="mr-2">Sort By:</div>
                     <Dropdown
                         placeholder={"Property"}
                         value={sortField}
-                        options={customerOptions}
+                        options={billsOptions}
                         onChange={handleSortFieldChange}
                     />
                     <div className="mx-2">Order:</div>
@@ -90,12 +97,14 @@ export default function CustomerPage() {
             </div>
 
             <div className="row">
-                {customers.map(customer => (
-                    <div key={customer.id} className="col-12 col-md-6 col-lg-4 mb-3">
-                        <CustomerCard
+                {bills.map(bill => (
+                    <div key={bill?.id} className="col-12 col-md-6 col-lg-4 mb-3">
+                        <BillCard
+                            bill={bill}
                             customer={customer}
-                            cities={cities}
-                            handleShowBills={handleShowBills}
+                            sellers={sellers}
+                            creditCards={creditCards}
+                            handleShowItems={handleShowItems}
                             handleDelete={handleDelete}
                         />
                     </div>
@@ -104,7 +113,7 @@ export default function CustomerPage() {
             <Paginator
                 first={first}
                 rows={rows}
-                totalRecords={1100}
+                totalRecords={5100}
                 rowsPerPageOptions={[10, 20, 50]}
                 onPageChange={onPageChange}
                 className="mt-2"

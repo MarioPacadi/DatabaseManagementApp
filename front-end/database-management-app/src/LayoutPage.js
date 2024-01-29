@@ -6,6 +6,7 @@ import {useEffect, useRef} from "react";
 import useToastStore from "./store/snackbar/ToastStore";
 import {Toast} from "primereact/toast";
 import CustomerPage from "./pages/CustomerPage";
+import BillsPage from "./pages/BillsPage";
 
 export function LayoutPage() {
 
@@ -22,8 +23,9 @@ export function LayoutPage() {
           <Toast ref={toastRef} />
             <Background>
                 <Routes>
-                    <Route path='/' element={<Navigate to='/customer' />} />
-                    <Route path='/customer' element={<CustomerPage />} />
+                    <Route path='/' element={<Navigate to='/customers' />} />
+                    <Route path='/customers' element={<CustomerPage />} />
+                    <Route path="/bills/:customerId" element={<BillsPage />} />
                 </Routes>
             </Background>
       </BrowserRouter>
