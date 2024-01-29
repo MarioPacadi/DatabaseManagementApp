@@ -6,12 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import useToastStore from "../store/snackbar/ToastStore";
 import useAuthStore from "../store/authStore";
 
-const Login = () => {
+const Register = () => {
     const navigate = useNavigate();
     const { showSuccessToast, showErrorToast } = useToastStore();
 
-    const { access_token, isError, login } = useAuthStore();
+    const { access_token, isError, register } = useAuthStore();
     const [formErrors, setFormErrors] = useState({
+        name: '',
         email: '',
         password: ''
     });
@@ -20,6 +21,7 @@ const Login = () => {
         event.preventDefault();
 
         const formData = {
+            name: event.target.name.value.trim(),
             email: event.target.email.value.trim(),
             password: event.target.password.value.trim()
         };
@@ -39,22 +41,14 @@ const Login = () => {
         //
         // }
 
-        login(formData.email,formData.password);
+        register(formData.name,formData.email,formData.password);
+        showSuccessToast('Register', 'Register successful!');
+        navigate('/login');
     };
-
-
-    useEffect(() => {
-        if (access_token) {
-            // console.log("jwt: "+ access_token)
-            localStorage.setItem('access_token', access_token ?? undefined);
-            showSuccessToast('Login', 'Login successful!');
-            navigate('/customers');
-        }
-    }, [access_token, navigate, showSuccessToast]);
 
     useEffect(() => {
         if (isError) {
-            showErrorToast('Login', 'Login failed!');
+            showErrorToast('Register', 'Register failed!');
         }
     }, [isError, showErrorToast]);
 
@@ -69,8 +63,18 @@ const Login = () => {
             }}
         >
             <Avatar icon="pi pi-user" size="xlarge" shape="circle" />
-            <h5 className="my-2">Login</h5>
+            <h5 className="my-2">Register</h5>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <InputText
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='name'
+                    placeholder='Name'
+                    name='name'
+                    autoFocus
+                />
+                {formErrors.name && <span style={{ color: 'red' }}>{formErrors.name}</span>}
                 <InputText
                     margin='normal'
                     required
@@ -79,7 +83,6 @@ const Login = () => {
                     placeholder='Email Address'
                     name='email'
                     autoComplete='email'
-                    autoFocus
                 />
                 {formErrors.email && <span style={{ color: 'red' }}>{formErrors.email}</span>}
                 <InputText
@@ -95,14 +98,14 @@ const Login = () => {
                 {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
                 <Button
                     type='submit'
-                    label='Sign In'
+                    label='Register'
                     fullWidth
                     variant='contained'
                     style={{ marginTop: 24, marginBottom: 16 }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Link to='/register'>
-                        {'Don\'t have an account? Sign Up'}
+                    <Link to='/login'>
+                        Already have an account?
                     </Link>
                 </div>
             </form>
@@ -110,4 +113,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

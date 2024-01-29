@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import * as Models from '../models';
-import fetchData from "./api/baseApi";
+import fetchData, {deleteData} from "./api/baseApi";
 
 const useDataStore = create((set) => ({
   customers: [],
@@ -29,6 +29,13 @@ const useDataStore = create((set) => ({
       const data = await fetchData({ dataType: dataType.name, ...params });
       const classData = await fetchDataForDataType(dataType, data);
       set({ [array]: classData });
+    } catch (error) {
+      console.error(`Error fetching and setting data for ${dataType}:`, error);
+    }
+  },
+  deleteData: async (dataType, id) => {
+    try {
+      await deleteData({ dataType: dataType.name, id });
     } catch (error) {
       console.error(`Error fetching and setting data for ${dataType}:`, error);
     }

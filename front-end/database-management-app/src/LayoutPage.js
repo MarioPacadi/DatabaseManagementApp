@@ -9,6 +9,7 @@ import CustomerPage from "./pages/CustomerPage";
 import BillsPage from "./pages/BillsPage";
 import Login from "./pages/Login";
 import ItemsPage from "./pages/ItemsPage";
+import Register from "./pages/Register";
 
 export function LayoutPage() {
 
@@ -30,6 +31,7 @@ export function LayoutPage() {
                     <Route path="/bills/:customerId" element={<BillsPage />} />
                     <Route path="/items/:billId" element={<ItemsPage />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                 </Routes>
             </Background>
       </BrowserRouter>

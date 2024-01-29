@@ -1,21 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Paginator} from 'primereact/paginator';
 import {filteredNameOf, findByID, generateOptionsFromProperties, nameOf} from "../utils/utils";
-import {Bill, City, CreditCard, Customer, Seller} from "../models";
+import {Bill, CreditCard, Customer, Seller} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
 import {useUpdateEffect} from "primereact/hooks";
-import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
 import BillCard from "../components/cards/BillCard";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function BillsPage() {
 
     const { customerId } = useParams();
 
-    const { bills, customers, sellers,creditCards, getData } = useDataStore();
+    const { bills, customers, sellers,creditCards, getData, deleteData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
@@ -68,7 +67,14 @@ export default function BillsPage() {
     }
 
     const handleDelete = (bill)=>{
-
+        deleteData(Bill,bill.id).then(() => {
+            // Once deletion is successful, reload the page
+            window.location.reload();
+        })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error deleting item:', error);
+            });
     }
 
     // Check if state exists and access its properties

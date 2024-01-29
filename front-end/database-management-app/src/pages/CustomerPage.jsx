@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function CustomerPage() {
 
-    const { customers,cities, getData } = useDataStore();
+    const { customers,cities, getData, deleteData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
@@ -62,7 +62,14 @@ export default function CustomerPage() {
     }
 
     const handleDelete = (customer)=>{
-
+        deleteData(Customer,customer.id).then(() => {
+            // Once deletion is successful, reload the page
+            window.location.reload();
+        })
+        .catch((error) => {
+            // Handle errors
+            console.error('Error deleting item:', error);
+        });
     }
 
     return (

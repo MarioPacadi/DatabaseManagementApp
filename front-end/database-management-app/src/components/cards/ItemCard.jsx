@@ -1,8 +1,7 @@
 import {Card} from "primereact/card";
 import {Button} from "primereact/button";
 import React from "react";
-import {findNameByID, findTypeByID, getToken} from "../../utils/utils";
-import {useNavigate} from "react-router-dom";
+import {findNameByID, getToken} from "../../utils/utils";
 
 const ItemCard = ({item,bill, products, handleDelete}) => {
 

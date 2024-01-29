@@ -1,22 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Paginator} from 'primereact/paginator';
 import {filteredNameOf, findByID, generateOptionsFromProperties, nameOf} from "../utils/utils";
-import {Bill, City, CreditCard, Customer, Item, Product, Seller} from "../models";
+import {Bill, Item, Product} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
 import {useUpdateEffect} from "primereact/hooks";
-import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
-import BillCard from "../components/cards/BillCard";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import ItemCard from "../components/cards/ItemCard";
 
 export default function ItemsPage() {
 
     const { billId } = useParams();
 
-    const { items,products,bills, getData } = useDataStore();
+    const { items,products,bills, getData, deleteData } = useDataStore();
     const {searchBarValue} = useSearchBarStore();
 
     const [first, setFirst] = useState(0);
@@ -58,8 +56,15 @@ export default function ItemsPage() {
         {label: 'Descending', value: 'desc'}
     ]
 
-    const handleDelete = (bill)=>{
-
+    const handleDelete = (item)=>{
+        deleteData(Item,item.id).then(() => {
+            // Once deletion is successful, reload the page
+            window.location.reload();
+        })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error deleting item:', error);
+            });
     }
 
     // Check if state exists and access its properties
