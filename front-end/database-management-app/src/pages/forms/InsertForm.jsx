@@ -16,9 +16,8 @@ const InsertForm = ({ DataType }) => {
                 return;
             }
 
-            showInfoToast("Insert", `Successful ${formData}`);
-            console.log(formData);
             insertData(DataType, formData);
+            showInfoToast("Insert", `Successful ${formData}`);
             navigate(`/${DataType.name.toString().toLowerCase()}s`);
         } catch (error) {
             // Handle error, maybe show an error message
