@@ -12,6 +12,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {deletePopup} from "../components/forms/ConfirmPopupButton";
 import useToastStore from "../store/snackbar/ToastStore";
 import {Button} from "primereact/button";
+import {getToken} from "../utils/utils";
 
 export default function BillsPage() {
 
@@ -96,10 +97,11 @@ export default function BillsPage() {
             <div className="row mt-3">
                 <div className="col-12 d-flex justify-content-center align-items-center my-3">
                     <h2 className="mb-2">Customer Bills</h2>
+                    {getToken() && (
                     <Button icon="pi pi-plus" outlined severity="info" aria-label="Add"
                             className="ms-2 rounded-circle"
                             onClick={()=>{navigate("/insert-bill")}}
-                    />
+                    />)}
                 </div>
                 <div className="col-12 d-flex align-items-center justify-content-center my-2">
                     <div className="mr-2">Sort By:</div>

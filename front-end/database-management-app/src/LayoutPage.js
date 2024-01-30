@@ -2,7 +2,7 @@ import './App.css';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Background from "./components/background/Background";
 import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import useToastStore from "./store/snackbar/ToastStore";
 import {Toast} from "primereact/toast";
 import CustomerPage from "./pages/CustomerPage";
@@ -11,9 +11,10 @@ import Login from "./pages/Login";
 import ItemsPage from "./pages/ItemsPage";
 import Register from "./pages/Register";
 import {ConfirmPopup} from "primereact/confirmpopup";
-import CustomerInsertForm from "./pages/forms/InsertForm";
 import InsertForm from "./pages/forms/InsertForm";
 import {Bill, Customer, Item} from "./models";
+import NoMatch from './pages/forms/NoMatch';
+import {getToken} from "./utils/utils";
 
 export function LayoutPage() {
 
@@ -24,6 +25,10 @@ export function LayoutPage() {
         useToastStore.getState().setToastRef(toastRef.current);
     }, []);
 
+    function PrivateRoute(element){
+        return getToken() ? element : <Navigate to="/login" replace />
+    }
+
   return (
       <BrowserRouter>
           <ResponsiveAppBar />
@@ -32,18 +37,21 @@ export function LayoutPage() {
             <Background>
                 <Routes>
                     <Route path='/' element={<Navigate to='/customers' />} />
-                    <Route path='/customers' element={<CustomerPage />} />
-                    <Route path="/bills/:customerId" element={<BillsPage />} />
-                    <Route path="/items/:billId" element={<ItemsPage />} />
+                    <Route path='*' element={<NoMatch />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/insert-customer" element={<InsertForm DataType={Customer} />} />
-                    <Route path="/insert-bill" element={<InsertForm DataType={Bill} />} />
-                    <Route path="/insert-item" element={<InsertForm DataType={Item} />} />
+                    <Route path='/customers' element={<CustomerPage />} />
+                    <Route path="/bills/:customerId" element={PrivateRoute(<BillsPage />)} />
+                    <Route path="/items/:billId" element={PrivateRoute(<ItemsPage />)} />
+                    <Route path="/insert-customer" element={PrivateRoute(<InsertForm DataType={Customer} />)} />
+                    <Route path="/insert-bill" element={PrivateRoute(<InsertForm DataType={Bill} />)} />
+                    <Route path="/insert-item" element={PrivateRoute(<InsertForm DataType={Item} />)} />
                 </Routes>
             </Background>
       </BrowserRouter>
   )
 }
+
+
 
 export default LayoutPage;

@@ -2,7 +2,6 @@ import {Card} from "primereact/card";
 import {Button} from "primereact/button";
 import React from "react";
 import {findNameByID, getToken} from "../../utils/utils";
-import {useNavigate} from "react-router-dom";
 
 const CustomerCard = ({ customer, cities, handleShowBills, handleDelete }) => {
 

@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Paginator} from 'primereact/paginator';
 import {generateOptionsFromProperties, nameOf} from "../utils/utils";
-import {Bill, City, Customer} from "../models";
+import {City, Customer} from "../models";
 import useDataStore from "../store/store";
 import {Dropdown} from "primereact/dropdown";
 import useSearchBarStore from "../store/searchBarStore";
-import {useMountEffect, useUpdateEffect} from "primereact/hooks";
+import {useUpdateEffect} from "primereact/hooks";
 import CustomerCard from "../components/cards/CustomerCard";
 import "../components/cards/cards.css"
 import {useNavigate} from "react-router-dom";
 import useToastStore from "../store/snackbar/ToastStore";
 import {deletePopup} from "../components/forms/ConfirmPopupButton";
 import {Button} from "primereact/button";
+import {getToken} from "../utils/utils";
 
 export default function CustomerPage() {
 
@@ -90,10 +91,11 @@ export default function CustomerPage() {
             <div className="row mt-3">
                 <div className="col-12 d-flex justify-content-center align-items-center my-3">
                     <h2 className="mb-2">Customer List</h2>
+                    {getToken() && (
                     <Button icon="pi pi-plus" outlined severity="info" aria-label="Add"
                             className="ms-2 rounded-circle"
                             onClick={()=>{navigate("/insert-customer")}}
-                    />
+                    />)}
                 </div>
                 <div className="col-12 d-flex align-items-center justify-content-center my-2">
                     <div className="mr-2">Sort By:</div>
