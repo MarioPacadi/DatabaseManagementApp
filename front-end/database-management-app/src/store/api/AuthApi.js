@@ -36,13 +36,22 @@ export const loginUser = async ( email, password ) => {
     }
 };
 
-export const getUser = async ( email ) => {
+export const getUser = async ( {id='', name='', email='', password=''} ) => {
     try {
+        const params={
+            ...(id && {id: id}),
+            ...(name && {name: name}),
+            ...(email && {email: email}),
+            ...(password && {password: password}),
+        };
+        console.log(params);
+
         const headers = {
             Authorization: `Bearer ${getToken()}`,
         };
 
-        const response = await axios.get(`${baseUrl}/User?email=${email}`,{
+        const response = await axios.get(`${baseUrl}/User`,{
+            params: params,
             headers: headers
         });
 
@@ -50,6 +59,32 @@ export const getUser = async ( email ) => {
     } catch (error) {
         console.error('Error getting user:', error);
         throw error; // Rethrow the error for handling in the caller
+    }
+};
+
+export const updateUser = async ( id, name, email, password ) => {
+    try {
+        const data={
+            name: name,
+            email: email,
+            password: password
+        }
+        console.log(data);
+
+        const headers = {
+            Authorization: `Bearer ${getToken()}`,
+        };
+
+        const response = await axios.put(`${baseUrl}/User/${id}`, {
+            name: name,
+            email: email,
+            password: password
+        },{headers: headers});
+
+        return response.data; // Return User
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
     }
 };
 

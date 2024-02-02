@@ -27,17 +27,22 @@ export default function ResponsiveAppBar() {
     );
 
     const items = [
-        { label: 'Customers List', icon: 'pi pi-user', template: itemTemplate, command: () => { navigate('/customers')} },
+        { label: 'Customers List', icon: 'pi pi-users', template: itemTemplate, command: () => { navigate('/customers')} },
     ];
 
     if (getToken()) {
         items.push(
+            { label: 'Profile', icon: 'pi pi-user-edit', template: itemTemplate,
+                command: () => {
+                    navigate('/profile');
+                }
+            },
             { label: 'Logout', icon: 'pi pi-sign-out', template: itemTemplate,
                 command: () => {
                     logout();
                     localStorage.removeItem('access_token');
                     showWarningToast("Logout","You have logged out!");
-                    navigate('/customers')
+                    navigate('/customers');
                 }
             },
         );

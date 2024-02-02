@@ -10,7 +10,7 @@ const Register = () => {
     const navigate = useNavigate();
     const { showSuccessToast, showErrorToast } = useToastStore();
 
-    const { access_token, isError, register } = useAuthStore();
+    const { access_token, isError, register, resetErrorState } = useAuthStore();
     const [formErrors, setFormErrors] = useState({
         name: '',
         email: '',
@@ -49,6 +49,7 @@ const Register = () => {
     useEffect(() => {
         if (isError) {
             showErrorToast('Register', 'Register failed!');
+            resetErrorState();
         }
     }, [isError]);
 

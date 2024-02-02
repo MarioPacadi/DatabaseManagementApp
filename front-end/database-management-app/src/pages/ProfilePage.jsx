@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import useAuthStore from "../store/authStore";
-import {useMountEffect} from "primereact/hooks";
-import {nameOf} from "../utils/utils";
+import {useMountEffect, useUpdateEffect} from "primereact/hooks";
+import {getUserId, nameOf} from "../utils/utils";
+import useToastStore from "../store/snackbar/ToastStore";
 
 const ProfilePage = () => {
-    const { user, getUser, updateUser } = useAuthStore(); // Fetch user data and updateUser function from useAuthStore
+    const { user, getUser, updateUser, resetErrorState } = useAuthStore(); // Fetch user data and updateUser function from useAuthStore
+    const {showInfoToast} = useToastStore();
 
     // State to manage form data and validation errors
     const [formData, setFormData] = useState({
@@ -14,12 +16,17 @@ const ProfilePage = () => {
     });
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        if (user?.email){
-            getUser(user?.email);
-        }
-        console.log("User:"+user)
+    useMountEffect(() => {
+        getUser({id: getUserId()});
     });
+
+    useUpdateEffect(()=>{
+        setFormData({
+            name: user?.name || '',
+            email: user?.email || '',
+            password: user?.password || ''
+        })
+    },[user])
 
     // Handler for form input changes
     const handleChange = (e) => {
@@ -49,14 +56,25 @@ const ProfilePage = () => {
         e.preventDefault();
         if (validateForm()) {
             // Call updateUser function from useAuthStore to update user profile
-            updateUser(formData);
+            updateUser(user.id,formData).then(() => {
+                // Once deletion is successful, reload the page
+                // window.location.reload();
+                showInfoToast('Updated', 'Successfully updated User');
+            })
         }
     };
 
     return (
-        <div className="container">
+        <div className="container"
+             style={{
+            display: 'flex',
+            height: '100vh',
+            paddingTop: 15,
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}>
             <h2 className="my-4">Profile</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name:</label>
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className={`form-control ${errors.name && 'is-invalid'}`} />
@@ -72,8 +90,7 @@ const ProfilePage = () => {
                     <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className={`form-control ${errors.password && 'is-invalid'}`} />
                     {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                 </div>
-                {/* Add more input fields for other profile information */}
-                <button type="submit" className="btn btn-primary">Save Changes</button>
+                <button type="submit" className="btn btn-primary">Edit Profile</button>
             </form>
         </div>
     );

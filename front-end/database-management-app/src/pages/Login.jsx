@@ -10,7 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { showSuccessToast, showErrorToast } = useToastStore();
 
-    const { access_token, isError, login } = useAuthStore();
+    const { access_token, isError, login, resetErrorState } = useAuthStore();
     const [formErrors, setFormErrors] = useState({
         email: '',
         password: ''
@@ -55,6 +55,7 @@ const Login = () => {
     useEffect(() => {
         if (isError) {
             showErrorToast('Login', 'Login failed!');
+            resetErrorState();
         }
     }, [isError]);
 

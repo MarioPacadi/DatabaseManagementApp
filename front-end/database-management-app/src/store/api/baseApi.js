@@ -21,7 +21,6 @@ const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'name', order 
       ...(propertyValue.trim() && propertyName.trim() && { [propertyName]: propertyValue.trim() })
     };
 
-    console.log(params);
     const headers = {
       Authorization: `Bearer ${getToken()}`,
     };
