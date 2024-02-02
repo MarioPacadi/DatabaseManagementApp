@@ -32,20 +32,20 @@ export default function BillsPage() {
     const customer = findByID(customerId,customers);
 
     useEffect(() => {
-        getData(Bill, nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
-        // getData(Bill,nameOf(() => bills), { page: 1, limit: rows, sort: sortField, order: sortOrder });
+        getData(Bill, nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: customerId });
+        console.log(propertyName);
         getData(Seller,nameOf(() => sellers), { sort: 'name', order: 'asc' });
         getData(CreditCard,nameOf(() => creditCards), { limit: 3000, sort: 'type', order: 'asc' });
-    }, [getData, rows, sortField, sortOrder]);
+    }, [getData, rows, sortField, sortOrder, customerId]);
 
     useUpdateEffect(() => {
-        getData(Bill,nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: customerId, searchTerm: searchBarValue });
+        getData(Bill,nameOf(() => bills), { page: first, limit: rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: customerId, searchTerm: searchBarValue });
     }, [searchBarValue]);
 
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        getData(Bill,nameOf(() => bills), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, [propertyName]: customerId });
+        getData(Bill,nameOf(() => bills), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: customerId });
     };
 
     const handleSortFieldChange = (e) => {

@@ -12,7 +12,6 @@ export const findByID = (id, array=[]) => {
 
     if (!array) return null;
 
-    console.log("findById: "+id);
     const item= array.find(item => item.id === id);
     return item ? item : array[0];
 };

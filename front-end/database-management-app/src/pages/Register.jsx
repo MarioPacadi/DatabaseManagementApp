@@ -27,11 +27,11 @@ const Register = () => {
         };
 
         // const errors = {};
-        // if (!formData.email) {
-        //     errors.email = 'Email is required';
-        // } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        //     errors.email = 'Invalid email address';
-        // }
+        if (!formData.email) {
+            formErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            formErrors.email = 'Invalid email address';
+        }
         // if (!formData.password) {
         //     errors.password = 'Password is required';
         // }
@@ -50,7 +50,7 @@ const Register = () => {
         if (isError) {
             showErrorToast('Register', 'Register failed!');
         }
-    }, [isError, showErrorToast]);
+    }, [isError]);
 
     return (
         <div

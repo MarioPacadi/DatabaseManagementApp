@@ -15,6 +15,7 @@ import InsertForm from "./pages/forms/InsertForm";
 import {Bill, Customer, Item} from "./models";
 import NoMatch from './pages/forms/NoMatch';
 import {getToken} from "./utils/utils";
+import ProfilePage from "./pages/ProfilePage";
 
 export function LayoutPage() {
 
@@ -46,6 +47,7 @@ export function LayoutPage() {
                     <Route path="/insert-customer" element={PrivateRoute(<InsertForm DataType={Customer} />)} />
                     <Route path="/insert-bill" element={PrivateRoute(<InsertForm DataType={Bill} />)} />
                     <Route path="/insert-item" element={PrivateRoute(<InsertForm DataType={Item} />)} />
+                    <Route path="/profile" element={PrivateRoute(<ProfilePage />)} />
                 </Routes>
             </Background>
       </BrowserRouter>

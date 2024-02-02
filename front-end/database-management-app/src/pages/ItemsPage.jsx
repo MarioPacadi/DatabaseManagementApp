@@ -32,18 +32,19 @@ export default function ItemsPage() {
     const bill = findByID(billId,bills);
 
     useEffect(() => {
-        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: billId });
+        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: billId });
+        // getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: billId });
         getData(Product,nameOf(() => products), { limit: 2100, sort: 'name', order: 'asc' });
     }, [getData, rows, sortField, sortOrder]);
 
     useUpdateEffect(() => {
-        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, [propertyName]: billId, searchTerm: searchBarValue });
+        getData(Item, nameOf(() => items), { page: first, limit: rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: billId, searchTerm: searchBarValue });
     }, [searchBarValue]);
 
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        getData(Item, nameOf(() => items), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, [propertyName]: billId });
+        getData(Item, nameOf(() => items), { page: event.page + 1, limit: event.rows, sort: sortField, order: sortOrder, propertyName: propertyName, propertyValue: billId });
     };
 
     const handleSortFieldChange = (e) => {

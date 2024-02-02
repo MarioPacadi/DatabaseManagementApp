@@ -5,7 +5,7 @@ import {getToken} from "../../utils/utils";
 export const baseUrl = 'http://localhost:3000';
 
 // Function to fetch data with paging, filtering, sorting, and searching
-const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'id', order = 'asc',
+const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'name', order = 'asc',
                                    searchName = `${sort}_like`, searchTerm = '',
                                    propertyName = '', propertyValue='' }) => {
   try {
@@ -18,9 +18,10 @@ const fetchData = async ({ dataType, page = 1, limit = 10, sort = 'id', order = 
       // Include name_like parameter only if searchTerm is provided and not empty
       ...(searchTerm.trim() && { [searchName]: searchTerm.trim() }),
       // Include propertyName parameter only if it is provided and searchTerm is provided
-      ...(propertyValue.trim() && propertyName && { [propertyName]: propertyValue.trim() })
+      ...(propertyValue.trim() && propertyName.trim() && { [propertyName]: propertyValue.trim() })
     };
 
+    console.log(params);
     const headers = {
       Authorization: `Bearer ${getToken()}`,
     };

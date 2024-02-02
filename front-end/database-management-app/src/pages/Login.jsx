@@ -50,13 +50,13 @@ const Login = () => {
             showSuccessToast('Login', 'Login successful!');
             navigate('/customers');
         }
-    }, [access_token, navigate, showSuccessToast]);
+    }, [access_token, navigate]);
 
     useEffect(() => {
         if (isError) {
             showErrorToast('Login', 'Login failed!');
         }
-    }, [isError, showErrorToast]);
+    }, [isError]);
 
     return (
         <div

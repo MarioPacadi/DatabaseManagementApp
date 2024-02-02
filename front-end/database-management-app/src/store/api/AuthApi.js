@@ -1,5 +1,6 @@
 import axios from "axios";
 import {baseUrl} from "./baseApi";
+import {getToken} from "../../utils/utils";
 
 
 const auth_url=`${baseUrl}/auth`;
@@ -34,3 +35,21 @@ export const loginUser = async ( email, password ) => {
         throw error; // Rethrow the error for handling in the caller
     }
 };
+
+export const getUser = async ( email ) => {
+    try {
+        const headers = {
+            Authorization: `Bearer ${getToken()}`,
+        };
+
+        const response = await axios.get(`${baseUrl}/User?email=${email}`,{
+            headers: headers
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error);
+        throw error; // Rethrow the error for handling in the caller
+    }
+};
+
